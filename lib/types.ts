@@ -26,3 +26,6 @@ export type HabitInsert = Pick<Habit, "name"> &
 export type HabitUpdate = Partial<HabitInsert>;
 
 export type HabitLogInsert = Pick<HabitLog, "habit_id" | "done_on">;
+
+/** A habit together with every date it was checked (YYYY-MM-DD). */
+export type HabitWithLogs = Habit & { doneDates: string[] };
