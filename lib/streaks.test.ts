@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { addDays, dayOfWeek, isDateString, todayIn } from "@/lib/dates";
-import { bestStreak, currentStreak, history, startOfWeek, weeklyCompletion } from "@/lib/streaks";
+import { bestStreak, currentStreak, history, isMilestone, startOfWeek, weeklyCompletion } from "@/lib/streaks";
 
 const TODAY = "2026-10-21"; // a Wednesday
 
@@ -101,5 +101,12 @@ describe("weeklyCompletion", () => {
 
   it("ignores check-ins from last week", () => {
     expect(weeklyCompletion([{ target: 1, doneDates: ["2026-10-17"] }], TODAY)).toBe(0);
+  });
+});
+
+describe("isMilestone", () => {
+  it("celebrates 7, 30, 100 and 365 days", () => {
+    expect([7, 30, 100, 365].every(isMilestone)).toBe(true);
+    expect([0, 1, 6, 8, 29].some(isMilestone)).toBe(false);
   });
 });

@@ -47,7 +47,7 @@ export function HabitDialog({ habit, onClose }: Props) {
           maxLength={NAME_MAX_LENGTH}
           defaultValue={habit?.name}
           error={state.fieldErrors?.name}
-          autoFocus
+          data-autofocus
         />
 
         <fieldset>

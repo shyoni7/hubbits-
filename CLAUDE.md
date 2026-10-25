@@ -24,7 +24,7 @@ A web app for tracking daily habits.
 - Dark, calm and minimal: near-black background, one bright accent color (`#3ECF8E`), rounded cards, soft shadows, Inter font, subtle animations.
 - UI language: English. (Switching to Hebrew means translating the copy and setting `dir="rtl"`.)
 - Fully responsive (mobile first) and accessible: labels, visible focus states, good contrast, respect `prefers-reduced-motion`.
-- All colors and fonts are design tokens defined in one place: the `@theme` block in `app/globals.css`. Components use token utilities (`bg-surface`, `text-accent`) and never hard-code colors, so the whole look changes from that one file.
+- All colors and fonts are design tokens defined in one place: the `@theme` block in `app/globals.css`. Components use token utilities (`bg-surface`, `text-accent`) and never hard-code colors, so the whole look changes from that one file. The only exceptions are places that cannot read CSS variables (`app/opengraph-image.tsx`, `app/icon.svg`, `themeColor` in `app/layout.tsx`); keep them in sync by hand.
 
 ## Quality bar
 

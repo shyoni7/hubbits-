@@ -68,3 +68,10 @@ export function weeklyCompletion(
   }
   return goal === 0 ? 0 : Math.round((achieved / goal) * 100);
 }
+
+/** Streak lengths worth celebrating. */
+export const STREAK_MILESTONES = [7, 30, 100, 365] as const;
+
+export function isMilestone(streak: number): boolean {
+  return (STREAK_MILESTONES as readonly number[]).includes(streak);
+}

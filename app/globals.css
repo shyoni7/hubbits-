@@ -3,8 +3,10 @@
 /*
  * Design tokens: the single place that defines the look of HabitFlow.
  * Change a value here and every component follows.
+ * "static" keeps every variable in the CSS, including the habit colors that
+ * are only referenced at runtime.
  */
-@theme {
+@theme static {
   /* Surfaces and text */
   --color-bg: #0a0b0b;
   --color-surface: #121414;

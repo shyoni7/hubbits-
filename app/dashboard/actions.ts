@@ -46,14 +46,14 @@ function parseHabitForm(formData: FormData) {
 
 /** Creates a habit, or updates it when the form has an id. */
 export async function saveHabit(_prev: HabitFormState, formData: FormData): Promise<HabitFormState> {
-  const session = await requireUser();
-  if (!session) return { error: SIGNED_OUT };
-
   const id = String(formData.get("id") ?? "");
   if (id && !UUID_RE.test(id)) return { error: GENERIC };
 
   const { values, fieldErrors } = parseHabitForm(formData);
   if (Object.keys(fieldErrors).length > 0) return { fieldErrors };
+
+  const session = await requireUser();
+  if (!session) return { error: SIGNED_OUT };
 
   const { supabase, user } = session;
   const { error } = id

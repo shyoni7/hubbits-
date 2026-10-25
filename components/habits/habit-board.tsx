@@ -4,12 +4,13 @@ import { useCallback, useOptimistic, useState, useTransition } from "react";
 import { deleteHabit, setHabitArchived, setHabitDone, type ActionResult } from "@/app/dashboard/actions";
 import { HabitCard } from "@/components/habits/habit-card";
 import { HabitDialog } from "@/components/habits/habit-dialog";
+import { StatsBar } from "@/components/habits/stats-bar";
 import { PlusIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { Toast } from "@/components/ui/toast";
 import { formatDate } from "@/lib/dates";
-import { weeklyCompletion } from "@/lib/streaks";
+import { currentStreak, weeklyCompletion } from "@/lib/streaks";
 import type { Habit, HabitWithLogs } from "@/lib/types";
 
 type OptimisticChange =
@@ -68,28 +69,18 @@ export function HabitBoard({ habits, today }: { habits: HabitWithLogs[]; today: 
       </div>
 
       {active.length > 0 ? (
-        <section aria-label="This week" className="mt-6 rounded-card border border-border bg-surface p-5 shadow-soft">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-sm font-medium text-muted">Weekly completion</h2>
-            <p className="text-2xl font-semibold tabular-nums">{weekly}%</p>
-          </div>
-          <div
-            role="progressbar"
-            aria-label="Weekly completion"
-            aria-valuenow={weekly}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            className="mt-3 h-2 overflow-hidden rounded-full bg-surface-2"
-          >
-            <div className="h-full rounded-full bg-accent transition-[width] duration-700 ease-(--ease-soft)" style={{ width: `${weekly}%` }} />
-          </div>
-        </section>
+        <StatsBar
+          doneToday={active.filter((h) => h.doneDates.includes(today)).length}
+          activeCount={active.length}
+          weekly={weekly}
+          longestStreak={Math.max(0, ...active.map((h) => currentStreak(h.doneDates, today)))}
+        />
       ) : null}
 
       {active.length === 0 ? (
         <EmptyState hasArchived={archived.length > 0} onCreate={() => openEditor()} />
       ) : (
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {active.map((habit) => (
             <li key={habit.id} className="animate-fade-up">
               <HabitCard
@@ -132,7 +123,7 @@ export function HabitBoard({ habits, today }: { habits: HabitWithLogs[]; today: 
           </button>
 
           {showArchive ? (
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {archived.map((habit) => (
                 <li key={habit.id} className="animate-fade-up">
                   <HabitCard

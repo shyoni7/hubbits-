@@ -22,7 +22,11 @@ export function Modal({ title, description, onClose, children }: ModalProps) {
   useEffect(() => {
     const dialog = ref.current;
     // Removing the element on unmount closes it, so no cleanup is needed.
-    if (dialog && !dialog.open) dialog.showModal();
+    if (dialog && !dialog.open) {
+      dialog.showModal();
+      // showModal focuses the first focusable element; prefer the marked field.
+      dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+    }
   }, []);
 
   return (

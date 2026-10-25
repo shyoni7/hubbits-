@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { AppPreview } from "@/components/landing/app-preview";
+import { LogoMark } from "@/components/logo";
 import { buttonStyles } from "@/components/ui/button";
 
 const features = [
@@ -61,11 +63,34 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section aria-labelledby="features-title" className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-          <h2 id="features-title" className="sr-only">
-            Features
+        <section aria-labelledby="preview-title" className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+          <h2 id="preview-title" className="sr-only">
+            What the app looks like
           </h2>
-          <ul className="grid gap-4 sm:grid-cols-3">
+          <figure className="animate-fade-up rounded-[1.75rem] border border-border bg-surface/60 p-2 shadow-soft [animation-delay:320ms] sm:p-3">
+            <div className="flex items-center gap-1.5 px-3 pt-2 pb-3" aria-hidden="true">
+              <span className="size-2.5 rounded-full bg-border-strong" />
+              <span className="size-2.5 rounded-full bg-border-strong" />
+              <span className="size-2.5 rounded-full bg-border-strong" />
+            </div>
+            <div className="rounded-card bg-bg p-4 sm:p-6">
+              <AppPreview />
+            </div>
+            <figcaption className="sr-only">
+              The HabitFlow dashboard: a daily progress ring, weekly completion, and a card for each habit with
+              its streaks and a 30 day history grid.
+            </figcaption>
+          </figure>
+        </section>
+
+        <section aria-labelledby="features-title" className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+          <h2 id="features-title" className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+            Everything you need, nothing you don&apos;t
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-center text-muted">
+            A focused tool for one job: helping you show up a little every day.
+          </p>
+          <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {features.map((feature) => (
               <li
                 key={feature.title}
@@ -82,7 +107,32 @@ export default function LandingPage() {
             ))}
           </ul>
         </section>
+        <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-surface px-6 py-14 text-center shadow-soft">
+            <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 left-1/2 h-48 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-3xl" />
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Your first streak starts today</h2>
+            <p className="mx-auto mt-3 max-w-md text-muted">It takes less than a minute to set up your first habit.</p>
+            <Link href="/signup" className={buttonStyles({ size: "lg", className: "mt-8" })}>
+              Create your free account
+            </Link>
+          </div>
+        </section>
       </main>
+
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:px-6">
+          <div className="flex items-center gap-2">
+            <LogoMark className="size-5" />
+            <span>HabitFlow</span>
+          </div>
+          <nav aria-label="Footer" className="flex gap-5">
+            <Link href="/signup" className="hover:text-fg">Sign up</Link>
+            <Link href="/login" className="hover:text-fg">Log in</Link>
+            <Link href="/dashboard" className="hover:text-fg">Dashboard</Link>
+          </nav>
+          <p>Built with Next.js and Supabase.</p>
+        </div>
+      </footer>
     </>
   );
 }

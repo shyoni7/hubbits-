@@ -4,7 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { ArchiveIcon, CheckIcon, FlameIcon, PencilIcon, RestoreIcon, TrashIcon, TrophyIcon } from "@/components/icons";
 import { formatDate } from "@/lib/dates";
 import { habitColorVar } from "@/lib/habit-options";
-import { bestStreak, currentStreak, history } from "@/lib/streaks";
+import { bestStreak, currentStreak, history, isMilestone } from "@/lib/streaks";
 import type { HabitWithLogs } from "@/lib/types";
 
 type Props = {
@@ -33,6 +33,7 @@ export function HabitCard({ habit, today, onToggle, onEdit, onArchive, onDelete 
   const archived = Boolean(habit.archived);
   const target = habit.target_per_week ?? 7;
   const doneCount = stats.grid.filter((d) => d.done).length;
+  const celebrate = doneToday && !archived && isMilestone(stats.current);
 
   return (
     <article
@@ -66,7 +67,7 @@ export function HabitCard({ habit, today, onToggle, onEdit, onArchive, onDelete 
             aria-label={`${habit.name}: ${doneToday ? "done today, tap to undo" : "mark as done for today"}`}
             className={`flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-(--habit) transition duration-300 ease-(--ease-soft) active:scale-90 ${
               doneToday
-                ? "animate-pop bg-(--habit) text-bg shadow-[0_0_24px_-6px_var(--habit)]"
+                ? `${celebrate ? "animate-ring" : "animate-pop"} bg-(--habit) text-bg shadow-[0_0_24px_-6px_var(--habit)]`
                 : "bg-transparent text-(--habit) hover:bg-(--habit)/10"
             }`}
           >
@@ -74,6 +75,15 @@ export function HabitCard({ habit, today, onToggle, onEdit, onArchive, onDelete 
           </button>
         ) : null}
       </div>
+
+      {celebrate ? (
+        <p
+          role="status"
+          className="mt-4 inline-flex animate-pop items-center gap-1.5 self-start rounded-full bg-(--habit)/15 px-3 py-1 text-xs font-semibold text-(--habit)"
+        >
+          <FlameIcon className="size-3.5" /> {stats.current} day streak!
+        </p>
+      ) : null}
 
       <dl className="mt-5 grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-surface-2 px-3 py-2.5">
