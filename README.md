@@ -41,3 +41,14 @@ Requirements: Node.js 20 or newer, npm, and a Supabase project.
 | `npm run build` | Production build (must pass)     |
 | `npm run lint`  | Run ESLint                       |
 | `npm test`      | Run unit tests (Vitest)          |
+
+## Supabase Auth URLs
+
+In Supabase, open **Authentication > URL Configuration**:
+
+- **Site URL**: your live site, e.g. `https://your-app.vercel.app`
+- **Redirect URLs**, add:
+  - `https://your-app.vercel.app/auth/callback`
+  - `http://localhost:3000/auth/callback` (for local development)
+
+The confirmation email links to `/auth/callback`, which signs the user in and opens the dashboard.

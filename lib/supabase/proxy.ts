@@ -6,7 +6,10 @@ import {
   supabaseUrl,
 } from "@/lib/env";
 
-/** Refreshes the Supabase session cookie on every request. */
+/**
+ * Refreshes the Supabase session cookie on every request and does the
+ * optimistic route protection. Pages still check the user themselves.
+ */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -36,7 +39,35 @@ export async function updateSession(request: NextRequest) {
 
   // Do not run code between createServerClient and getClaims: it validates
   // the token and refreshes it when needed.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const isSignedIn = Boolean(data?.claims?.sub);
+  const { pathname } = request.nextUrl;
+
+  if (!isSignedIn && pathname.startsWith("/dashboard")) {
+    return redirectKeepingCookies(request, response, "/login");
+  }
+  if (isSignedIn && (pathname === "/login" || pathname === "/signup")) {
+    return redirectKeepingCookies(request, response, "/dashboard");
+  }
 
   return response;
+}
+
+/** Redirect while keeping any refreshed session cookies and cache headers. */
+function redirectKeepingCookies(
+  request: NextRequest,
+  from: NextResponse,
+  pathname: string,
+) {
+  const url = request.nextUrl.clone();
+  url.pathname = pathname;
+  url.search = "";
+  const redirect = NextResponse.redirect(url);
+  from.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+  from.headers.forEach((value, key) => {
+    if (key === "cache-control" || key === "expires" || key === "pragma") {
+      redirect.headers.set(key, value);
+    }
+  });
+  return redirect;
 }

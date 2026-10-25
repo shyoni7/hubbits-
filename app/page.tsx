@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Logo } from "@/components/logo";
 import { buttonStyles } from "@/components/ui/button";
 
 const features = [
@@ -32,18 +31,6 @@ const features = [
 export default function LandingPage() {
   return (
     <>
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
-        <Logo />
-        <nav aria-label="Account" className="flex items-center gap-2">
-          <Link href="/login" className={buttonStyles({ variant: "ghost", size: "sm" })}>
-            Log in
-          </Link>
-          <Link href="/signup" className={buttonStyles({ size: "sm" })}>
-            Sign up
-          </Link>
-        </nav>
-      </header>
-
       <main className="flex-1">
         <section className="relative mx-auto max-w-6xl px-4 pt-16 pb-20 text-center sm:px-6 sm:pt-24">
           <div
