@@ -8,7 +8,13 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+// Vercel sets this to the production domain at build time. Next.js also
+// falls back to it on Vercel, but being explicit keeps social image URLs
+// correct everywhere.
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const metadata: Metadata = {
+  metadataBase: productionHost ? new URL(`https://${productionHost}`) : undefined,
   title: {
     default: "HabitFlow: build habits that stick",
     template: "%s · HabitFlow",

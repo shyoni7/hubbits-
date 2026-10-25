@@ -38,6 +38,7 @@ A web app for tracking daily habits.
 - Supabase via `@supabase/supabase-js` + `@supabase/ssr`.
 - `lib/supabase/client.ts` (browser), `lib/supabase/server.ts` (server), and `proxy.ts` at the root (called `middleware.ts` before Next.js 16) that refreshes the session on every request.
 - No separate backend server: only Server Components, Server Actions and Route Handlers.
+- `vercel.json` pins the Vercel framework preset to Next.js. Production deploys from `main`: https://hubbits.vercel.app
 - Next.js 16 runs with Cache Components: anything that reads cookies or the database renders inside a `<Suspense>` boundary (or a route with `loading.tsx`).
 
 ## Environment variables
@@ -46,6 +47,7 @@ A web app for tracking daily habits.
   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `.env.example` with empty values is committed. Local files (`.env*.local`) stay out of git.
 - If the variables are missing, the app shows a friendly setup message instead of crashing.
+- `VERCEL_PROJECT_PRODUCTION_URL` is a system variable Vercel sets automatically (used for `metadataBase`); it is not something to configure.
 
 ## Folders
 

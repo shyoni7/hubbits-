@@ -2,7 +2,7 @@
 
 A calm, minimal web app for tracking daily habits. Built with Next.js, Tailwind CSS and Supabase, and deployed on Vercel.
 
-**Live site:** _add your Vercel URL here_
+**Live site:** https://hubbits.vercel.app
 
 ## Features
 
@@ -59,15 +59,23 @@ Requirements: Node.js 20 or newer, npm, and a Supabase project.
 
 In Supabase, open **Authentication > URL Configuration**:
 
-- **Site URL**: your live site, e.g. `https://your-app.vercel.app`
+- **Site URL**: your live site, `https://hubbits.vercel.app`
 - **Redirect URLs**, add:
-  - `https://your-app.vercel.app/auth/callback`
+  - `https://hubbits.vercel.app/auth/callback`
   - `http://localhost:3000/auth/callback` (for local development)
 
 The confirmation email links to `/auth/callback`, which signs the user in and opens the dashboard.
 
+### Confirmation email template (recommended)
+
+By default the confirmation link only signs the user in automatically when it is opened in the same browser they signed up in. To make it work from any device (for example signing up on a laptop and opening the email on a phone), open **Authentication > Emails > Confirm signup** in Supabase and change the link to:
+
+```html
+<a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email&next=/dashboard">Confirm your email</a>
+```
+
 ## Deploy to Vercel
 
-1. Push the repo to GitHub and import it in Vercel (**Add New > Project**). Vercel detects Next.js automatically, no build settings needed.
+1. Push the repo to GitHub and import it in Vercel (**Add New > Project**). `vercel.json` sets the Next.js framework preset, so no build settings are needed.
 2. Under **Settings > Environment Variables**, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 3. Deploy, then set the Supabase Auth URLs above to your Vercel domain.

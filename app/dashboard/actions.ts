@@ -110,6 +110,17 @@ export async function setHabitDone(habitId: string, date: string, done: boolean)
   }
 
   const { supabase, user } = session;
+
+  // Archived habits are read-only.
+  const { data: habit, error: habitError } = await supabase
+    .from("habits")
+    .select("archived")
+    .eq("id", habitId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (habitError || !habit) return { ok: false, error: GENERIC };
+  if (habit.archived) return { ok: false, error: "Restore this habit to check it off." };
+
   const { error } = done
     ? await supabase
         .from("habit_logs")
