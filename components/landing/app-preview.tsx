@@ -9,7 +9,7 @@ import type { HabitWithLogs } from "@/lib/types";
 // A fixed date keeps the preview identical on the server and in the browser.
 const TODAY = "2026-03-18";
 
-function sample(id: string, name: string, emoji: string, color: string, target: number, skip: number[]): HabitWithLogs {
+function sample(id: string, name: string, icon: string, color: string, target: number, skip: number[]): HabitWithLogs {
   const doneDates = Array.from({ length: 40 }, (_, i) => i)
     .filter((i) => !skip.includes(i))
     .map((i) => addDays(TODAY, -i));
@@ -17,7 +17,7 @@ function sample(id: string, name: string, emoji: string, color: string, target: 
     id,
     user_id: "preview",
     name,
-    emoji,
+    icon,
     color,
     target_per_week: target,
     archived: false,
@@ -27,9 +27,9 @@ function sample(id: string, name: string, emoji: string, color: string, target: 
 }
 
 const habits = [
-  sample("1", "Drink 2L of water", "💧", "sky", 7, [5, 12, 13, 26]),
-  sample("2", "Read 10 pages", "📚", "violet", 5, [0, 3, 8, 9, 15, 21, 22, 29]),
-  sample("3", "Morning run", "🏃", "mint", 3, [1, 2, 4, 6, 7, 10, 11, 14, 16, 17, 20, 23, 24, 27, 28]),
+  sample("1", "Drink 2L of water", "droplet", "sky", 7, [5, 12, 13, 26]),
+  sample("2", "Read 10 pages", "book-open", "violet", 5, [0, 3, 8, 9, 15, 21, 22, 29]),
+  sample("3", "Morning run", "footprints", "mint", 3, [1, 2, 4, 6, 7, 10, 11, 14, 16, 17, 20, 23, 24, 27, 28]),
 ];
 
 const noop = () => {};

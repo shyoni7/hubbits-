@@ -1,10 +1,18 @@
 // Choices offered in the habit form. Shared by the UI and the server-side validation.
 
-export const HABIT_EMOJIS = [
-  "✅", "💧", "🏃", "🧘", "📚", "✍️", "🥗", "🍎",
-  "😴", "💪", "🚶", "🚴", "🎸", "🎨", "💻", "🧠",
-  "🌱", "☀️", "🧹", "💊", "🙏", "📵", "💰", "❤️",
+/** Icon keys; components/habit-icon.tsx maps each one to an SVG icon. */
+export const HABIT_ICONS = [
+  "check", "droplet", "footprints", "book-open", "dumbbell", "bike",
+  "moon", "bed", "apple", "salad", "pill", "heart",
+  "brain", "wind", "timer", "sun", "sprout", "leaf",
+  "pen-line", "languages", "code", "music", "palette", "piggy-bank",
 ] as const;
+
+export type HabitIconKey = (typeof HABIT_ICONS)[number];
+
+export function isHabitIcon(value: unknown): value is HabitIconKey {
+  return (HABIT_ICONS as readonly unknown[]).includes(value);
+}
 
 /** Keys map to the --color-habit-* design tokens in app/globals.css. */
 export const HABIT_COLORS = [
@@ -18,7 +26,7 @@ export const HABIT_COLORS = [
 
 export type HabitColor = (typeof HABIT_COLORS)[number]["key"];
 
-export const DEFAULT_EMOJI = HABIT_EMOJIS[0];
+export const DEFAULT_ICON: HabitIconKey = "check";
 export const DEFAULT_COLOR: HabitColor = "mint";
 export const NAME_MAX_LENGTH = 40;
 

@@ -8,7 +8,7 @@ A web app for tracking daily habits.
 
 - Public landing page at `/` that explains the app, with Sign up and Log in buttons.
 - Accounts with email + password via Supabase Auth: sign up, log in, log out. If Supabase requires email confirmation, show "Check your inbox" after sign up.
-- Private `/dashboard`: create, edit, archive and delete habits. A habit has a name, emoji, color and a target of days per week.
+- Private `/dashboard`: create, edit, archive and delete habits. A habit has a name, icon, color and a target of days per week.
 - Each day the user checks off the habits they did. Show the current streak, best streak and a 30 day history grid for every habit, and the weekly completion percentage at the top of the page.
 - Every user sees only their own data.
 
@@ -22,6 +22,7 @@ A web app for tracking daily habits.
 ## Design (current style, easy to change later)
 
 - Dark, calm and minimal: near-black background, one bright accent color (`#3ECF8E`), rounded cards, soft shadows, Inter font, subtle animations.
+- Icons are SVG only (`lucide-react`, mapped in `components/habit-icon.tsx`). Never use emoji in the UI.
 - UI language: English. (Switching to Hebrew means translating the copy and setting `dir="rtl"`.)
 - Fully responsive (mobile first) and accessible: labels, visible focus states, good contrast, respect `prefers-reduced-motion`.
 - All colors and fonts are design tokens defined in one place: the `@theme` block in `app/globals.css`. Components use token utilities (`bg-surface`, `text-accent`) and never hard-code colors, so the whole look changes from that one file. The only exceptions are places that cannot read CSS variables (`app/opengraph-image.tsx`, `app/icon.svg`, `themeColor` in `app/layout.tsx`); keep them in sync by hand.
@@ -55,6 +56,6 @@ A web app for tracking daily habits.
 
 ## Database rules
 
-- Every schema change is a numbered SQL file in `supabase/migrations/` (e.g. `001_init.sql`). The owner runs them manually in the Supabase SQL Editor, so they must be safe to run more than once.
+- Every schema change is a numbered SQL file in `supabase/migrations/` (e.g. `001_init.sql`), applied to the Supabase project `HabitsFlow` (`hvlxhdrrqmlccjpfjhzp`) through the Supabase connector or the SQL Editor. Files must be safe to run more than once.
 - Row Level Security is enabled on every table, with policies so each user can access only their own rows.
 - All reads and writes go through the Supabase server client and rely on RLS. Server Actions validate every input.

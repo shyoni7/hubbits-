@@ -7,7 +7,7 @@ A calm, minimal web app for tracking daily habits. Built with Next.js, Tailwind 
 ## Features
 
 - Email and password accounts (Supabase Auth) with email confirmation
-- Create, edit, archive and delete habits (name, emoji, color, days per week)
+- Create, edit, archive and delete habits (name, icon, color, days per week)
 - One tap to check off today, with instant (optimistic) feedback
 - Current streak, best streak and a 30 day history grid for every habit
 - Daily progress ring, weekly completion and longest active streak

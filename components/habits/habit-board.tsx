@@ -2,6 +2,7 @@
 
 import { useCallback, useOptimistic, useState, useTransition } from "react";
 import { deleteHabit, setHabitArchived, setHabitDone, type ActionResult } from "@/app/dashboard/actions";
+import { HabitIcon } from "@/components/habit-icon";
 import { HabitCard } from "@/components/habits/habit-card";
 import { HabitDialog } from "@/components/habits/habit-dialog";
 import { StatsBar } from "@/components/habits/stats-bar";
@@ -177,10 +178,17 @@ export function HabitBoard({ habits, today }: { habits: HabitWithLogs[]; today: 
 function EmptyState({ hasArchived, onCreate }: { hasArchived: boolean; onCreate: () => void }) {
   return (
     <div className="mt-8 flex animate-fade-up flex-col items-center rounded-card border border-dashed border-border-strong bg-surface/50 px-6 py-14 text-center">
-      <div className="flex gap-2 text-3xl" aria-hidden="true">
-        <span className="-rotate-6">💧</span>
-        <span className="-translate-y-1">📚</span>
-        <span className="rotate-6">🏃</span>
+      <div className="flex gap-2" aria-hidden="true">
+        {(["droplet", "book-open", "footprints"] as const).map((icon, i) => (
+          <span
+            key={icon}
+            className={`flex size-11 items-center justify-center rounded-xl bg-accent/10 text-accent ${
+              ["-rotate-6", "-translate-y-1", "rotate-6"][i]
+            }`}
+          >
+            <HabitIcon icon={icon} className="size-5" />
+          </span>
+        ))}
       </div>
       <h2 className="mt-5 text-lg font-semibold">{hasArchived ? "No active habits" : "Start with one small habit"}</h2>
       <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">

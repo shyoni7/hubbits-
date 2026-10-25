@@ -2,14 +2,16 @@
 
 import { useActionState, useEffect } from "react";
 import { saveHabit, type HabitFormState } from "@/app/dashboard/actions";
+import { HabitIcon, habitIconLabel } from "@/components/habit-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Modal } from "@/components/ui/modal";
 import {
   DEFAULT_COLOR,
-  DEFAULT_EMOJI,
+  DEFAULT_ICON,
   HABIT_COLORS,
-  HABIT_EMOJIS,
+  HABIT_ICONS,
+  isHabitIcon,
   NAME_MAX_LENGTH,
 } from "@/lib/habit-options";
 import type { Habit } from "@/lib/types";
@@ -26,7 +28,7 @@ export function HabitDialog({ habit, onClose }: Props) {
     if (state.ok) onClose();
   }, [state.ok, onClose]);
 
-  const emoji = habit?.emoji && (HABIT_EMOJIS as readonly string[]).includes(habit.emoji) ? habit.emoji : DEFAULT_EMOJI;
+  const icon = isHabitIcon(habit?.icon) ? habit.icon : DEFAULT_ICON;
   const color = habit?.color ?? DEFAULT_COLOR;
   const target = habit?.target_per_week ?? 7;
 
@@ -51,20 +53,21 @@ export function HabitDialog({ habit, onClose }: Props) {
         />
 
         <fieldset>
-          <legend className="text-sm font-medium">Emoji</legend>
+          <legend className="text-sm font-medium">Icon</legend>
           <div className="mt-2 grid grid-cols-8 gap-1.5">
-            {HABIT_EMOJIS.map((option) => (
+            {HABIT_ICONS.map((option) => (
               <label key={option} className="relative cursor-pointer">
-                <input type="radio" name="emoji" value={option} defaultChecked={option === emoji} className="peer sr-only" />
+                <input type="radio" name="icon" value={option} defaultChecked={option === icon} className="peer sr-only" />
                 <span
-                  className={`flex aspect-square items-center justify-center rounded-lg bg-surface-2 text-lg transition hover:bg-border peer-checked:bg-accent/15 ${optionRing}`}
+                  className={`flex aspect-square items-center justify-center rounded-lg bg-surface-2 text-muted transition hover:bg-border hover:text-fg peer-checked:bg-accent/15 peer-checked:text-accent ${optionRing}`}
                 >
-                  {option}
+                  <HabitIcon icon={option} className="size-[18px]" />
                 </span>
+                <span className="sr-only">{habitIconLabel(option)}</span>
               </label>
             ))}
           </div>
-          {state.fieldErrors?.emoji ? <p className="mt-1.5 text-xs text-danger">{state.fieldErrors.emoji}</p> : null}
+          {state.fieldErrors?.icon ? <p className="mt-1.5 text-xs text-danger">{state.fieldErrors.icon}</p> : null}
         </fieldset>
 
         <fieldset>

@@ -4,7 +4,8 @@ export type Habit = {
   id: string;
   user_id: string;
   name: string;
-  emoji: string | null;
+  /** Key from HABIT_ICONS in lib/habit-options.ts. */
+  icon: string | null;
   color: string | null;
   target_per_week: number | null;
   archived: boolean | null;
@@ -21,7 +22,7 @@ export type HabitLog = {
 
 /** Fields the app sends when creating a habit (id and user_id come from defaults). */
 export type HabitInsert = Pick<Habit, "name"> &
-  Partial<Pick<Habit, "emoji" | "color" | "target_per_week" | "archived">>;
+  Partial<Pick<Habit, "icon" | "color" | "target_per_week" | "archived">>;
 
 export type HabitUpdate = Partial<HabitInsert>;
 

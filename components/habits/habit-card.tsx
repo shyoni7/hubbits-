@@ -2,6 +2,7 @@
 
 import { useMemo, type CSSProperties } from "react";
 import { ArchiveIcon, CheckIcon, FlameIcon, PencilIcon, RestoreIcon, TrashIcon, TrophyIcon } from "@/components/icons";
+import { HabitIcon } from "@/components/habit-icon";
 import { formatDate } from "@/lib/dates";
 import { habitColorVar } from "@/lib/habit-options";
 import { bestStreak, currentStreak, history, isMilestone } from "@/lib/streaks";
@@ -45,8 +46,8 @@ export function HabitCard({ habit, today, onToggle, onEdit, onArchive, onDelete 
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2.5">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-(--habit)/12 text-xl" aria-hidden="true">
-              {habit.emoji ?? "✅"}
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-(--habit)/12 text-(--habit)">
+              <HabitIcon icon={habit.icon} className="size-5" />
             </span>
             <div className="min-w-0">
               <h3 className="truncate font-semibold" title={habit.name}>

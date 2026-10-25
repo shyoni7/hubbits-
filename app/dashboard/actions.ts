@@ -3,7 +3,7 @@
 import { refresh } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
 import { addDays, isDateString } from "@/lib/dates";
-import { HABIT_COLORS, HABIT_EMOJIS, NAME_MAX_LENGTH } from "@/lib/habit-options";
+import { HABIT_COLORS, isHabitIcon, NAME_MAX_LENGTH } from "@/lib/habit-options";
 import { getUserToday } from "@/lib/habits";
 import { createClient } from "@/lib/supabase/server";
 import type { HabitInsert } from "@/lib/types";
@@ -13,7 +13,7 @@ export type ActionResult = { ok: true } | { ok: false; error: string };
 export type HabitFormState = {
   ok?: boolean;
   error?: string;
-  fieldErrors?: { name?: string; emoji?: string; color?: string; target?: string };
+  fieldErrors?: { name?: string; icon?: string; color?: string; target?: string };
 };
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -27,7 +27,7 @@ async function requireUser() {
 
 function parseHabitForm(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim().replace(/\s+/g, " ");
-  const emoji = String(formData.get("emoji") ?? "");
+  const icon = String(formData.get("icon") ?? "");
   const color = String(formData.get("color") ?? "");
   const target = Number(formData.get("target_per_week"));
 
@@ -35,12 +35,12 @@ function parseHabitForm(formData: FormData) {
   if (!name) fieldErrors.name = "Give your habit a name.";
   else if (name.length > NAME_MAX_LENGTH)
     fieldErrors.name = `Keep it under ${NAME_MAX_LENGTH} characters.`;
-  if (!(HABIT_EMOJIS as readonly string[]).includes(emoji)) fieldErrors.emoji = "Pick an emoji.";
+  if (!isHabitIcon(icon)) fieldErrors.icon = "Pick an icon.";
   if (!HABIT_COLORS.some((c) => c.key === color)) fieldErrors.color = "Pick a color.";
   if (!Number.isInteger(target) || target < 1 || target > 7)
     fieldErrors.target = "Choose between 1 and 7 days.";
 
-  const values: HabitInsert = { name, emoji, color, target_per_week: target };
+  const values: HabitInsert = { name, icon, color, target_per_week: target };
   return { values, fieldErrors };
 }
 

@@ -7,7 +7,7 @@ create table if not exists public.habits (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid() references auth.users on delete cascade,
   name text not null,
-  emoji text,
+  icon text,
   color text,
   target_per_week int default 7,
   archived boolean default false,
